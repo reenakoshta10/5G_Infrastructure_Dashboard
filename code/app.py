@@ -39,8 +39,8 @@ if selection == 'Costs Per Square Kilometer by Geotype':
                    horizontal_spacing = 0.05,
                    vertical_spacing= 0.05)
       i = 0
-      for row in range(1,4):
-          for col in range(1,4):
+      for col in range(1,4):
+          for row in range(1,4):
               df = df_list[i]
               fig.add_trace(go.Bar(x=df['geotype'], 
                                   y=df['RAN.macro']/df['area_km2'], 
@@ -97,8 +97,8 @@ elif selection == 'Aggregate cost by Geotype':
                         horizontal_spacing = 0.05,
                         vertical_spacing= 0.05)
       i = 0
-      for row in range(1,4):
-          for col in range(1,4):
+      for col in range(1,4):
+          for row in range(1,4):
               df = df_list[i]
               fig.add_trace(go.Bar(x=df['geotype'], 
                                   y=df['RAN.macro'], 
@@ -158,7 +158,7 @@ elif selection == 'Capacity Margin by Scenario':
         color="capacity_margin",
         hover_name="municipalities",
         title=f"Capacity Margin for {strategy} {scenario}",
-        # range_color=[-1200000, 300000]
+        range_color=[-1200000, 300000]
         )
       fig.update_geos(fitbounds="locations", visible=False)
       st.plotly_chart(fig)
