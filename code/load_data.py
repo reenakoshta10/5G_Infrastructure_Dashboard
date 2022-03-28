@@ -1,5 +1,6 @@
 import pandas as pd
 import json
+import locale
 
 def demand_driven_aggregate_geotype_cost():
   ddagc = pd.read_csv("data/demand_driven_aggregate_geotype_cost.csv")
@@ -33,10 +34,6 @@ def demand_driven_municipality_capacity_results():
       'Utrecht':'0344',
   }
   city_code= {}
-  for m in cities['features']:
-      m["id"] = m["properties"]["code"]
-      city_code[m['properties']['name']] = m['properties']['code']
-  ddmcr['id']= ddmcr['municipalities'].apply(add_id)
   def add_id(x):
     if x in city_code.keys():
         return city_code[x]  
@@ -45,11 +42,31 @@ def demand_driven_municipality_capacity_results():
     elif x in temp_code:
         return temp_code[x]
     else:
-        print(x)
         return 0
-
+  for m in cities['features']:
+      m["id"] = m["properties"]["code"]
+      city_code[m['properties']['name']] = m['properties']['code']
+  ddmcr['id']= ddmcr['municipalities'].apply(add_id)
+  
   return ddmcr, cities
 
-def filter_data_for_map(data, scenario, strategy):
-  data[(data['strategy']=='Hybrid') & (data['scenario']=='Scenario 1 (30 Mbps)')]
+def convert_str_to_float(num):
+    num = num.replace(" ","")
+    if num[0]=="-" and len(num)==1:
+        return 0
+    elif num[0]=="-":
+        num = num[1:]
+        return int(num.replace(',','')) * (-1)
+    else:
+        return int(num.replace(',',''))
 
+def demand_driven_aggregate_cost_results():
+  ddacr = pd.read_csv("data/demand_driven_aggregate_cost_results.csv")
+  ddacr['cost']= ddacr['cost'].apply(convert_str_to_float)
+  return ddacr
+
+def supply_driven_analysis_results():
+  sdar = pd.read_csv("data/supply_driven_analysis_results.csv", index_col=0)
+  df_all= sdar[sdar['spectrum_availability']== 'All'].groupby('geotype')[["max_user_demand_lte_mbps_km2", "max_user_demand_5g_mbps_km2"]].mean()
+  df_limited= sdar[sdar['spectrum_availability']== 'Limited'].groupby('geotype')[["max_user_demand_lte_mbps_km2", "max_user_demand_5g_mbps_km2"]].mean()
+  return df_all, df_limited
