@@ -4,6 +4,13 @@ import locale
 
 def demand_driven_aggregate_geotype_cost():
   ddagc = pd.read_csv("data/demand_driven_aggregate_geotype_cost.csv")
+  ddagc['cost']= ddagc['cost'].apply(lambda x: round(x/1000000, 2))
+  ddagc['RAN.macro']= ddagc['RAN.macro'].apply(lambda x: round(x/1000000, 2))
+  ddagc['RAN.small.cells']= ddagc['RAN.small.cells'].apply(lambda x: round(x/1000000, 2))
+  ddagc['backhaul.macro']= ddagc['backhaul.macro'].apply(lambda x: round(x/1000000, 2))
+  ddagc['civil.works.macro']= ddagc['civil.works.macro'].apply(lambda x: round(x/1000000, 2))
+  ddagc['civil.works.small']= ddagc['civil.works.small'].apply(lambda x: round(x/1000000, 2))
+  print(ddagc.head())
   df_list = []
   df_list.append(ddagc[(ddagc['strategy']=='Hybrid') & (ddagc['scenario']=='Scenario 1 (30 Mbps)')])
   df_list.append(ddagc[(ddagc['strategy']=='Hybrid') & (ddagc['scenario']=='Scenario 2 (100 Mbps)')])
@@ -18,6 +25,7 @@ def demand_driven_aggregate_geotype_cost():
 
 def demand_driven_municipality_capacity_results():
   ddmcr = pd.read_csv("data/demand_driven_municipality_capacity_results.csv")
+  ddmcr['capacity_margin']= ddmcr['capacity_margin'].apply(lambda x: round(x/1000))
   cities = json.load(open("data/townships.geojson", "r"))
   temp_code = {
       'Bergen (L.)':'0893',
