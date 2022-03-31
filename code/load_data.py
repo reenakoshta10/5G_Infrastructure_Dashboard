@@ -10,7 +10,6 @@ def demand_driven_aggregate_geotype_cost():
   ddagc['backhaul.macro']= ddagc['backhaul.macro'].apply(lambda x: round(x/1000000, 2))
   ddagc['civil.works.macro']= ddagc['civil.works.macro'].apply(lambda x: round(x/1000000, 2))
   ddagc['civil.works.small']= ddagc['civil.works.small'].apply(lambda x: round(x/1000000, 2))
-  print(ddagc.head())
   df_list = []
   df_list.append(ddagc[(ddagc['strategy']=='Hybrid') & (ddagc['scenario']=='Scenario 1 (30 Mbps)')])
   df_list.append(ddagc[(ddagc['strategy']=='Hybrid') & (ddagc['scenario']=='Scenario 2 (100 Mbps)')])
